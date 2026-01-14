@@ -43,6 +43,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Build" Version="17.10.46" />
         <_ContentIncludedByDefault Remove="launch\Properties\launchSettings.json" />
         <_ContentIncludedByDefault Remove="launch\Properties\serviceDependencies.json" />
         <_ContentIncludedByDefault Remove="launch\Properties\serviceDependencies.local.json" />
