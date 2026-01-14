@@ -1,0 +1,24 @@
+# Use the official Microsoft .NET SDK image to build the application
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
+WORKDIR /app
+
+# Copy solution and project files
+COPY *.sln ./
+COPY CoinAPI/*.csproj ./CoinAPI/
+RUN dotnet restore
+
+# Copy the rest of the application code
+COPY CoinAPI/ ./CoinAPI/
+
+# Publish the application to a directory
+WORKDIR /app/CoinAPI
+RUN dotnet publish -c Release -o out
+
+# Generate the runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+COPY --from=build-env /app/CoinAPI/out .
+# Expose the port the app runs on
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://+:8080
+ENTRYPOINT ["dotnet", "ProviderApi.dll"]

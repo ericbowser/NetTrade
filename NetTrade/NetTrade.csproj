@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <StartupObject>NetTrade.Program</StartupObject>
+        <LangVersion>10</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+<!--        <UserSecretsId>e70c06f9-a29c-4fa3-861f-63495ca38c7d</UserSecretsId>-->
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <WarningLevel>1</WarningLevel>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <WarningLevel>1</WarningLevel>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Alpaca.Markets.Extensions" Version="7.2.0" />
+        <PackageReference Include="Alpaca.Markets" Version="7.2.0" />
+        <PackageReference Include="Anthropic.SDK" Version="5.8.0" />
+        <PackageReference Include="Dapper" Version="2.1.66" />
+        <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+        <PackageReference Include="Dapper.SqlBuilder" Version="2.1.66" />
+        <PackageReference Include="Google.Apis.Aiplatform.v1" Version="1.72.0.3957" />
+        <PackageReference Include="Google.Apis.Gmail.v1" Version="1.73.0.3987" />
+        <PackageReference Include="Jose-JWT" Version="5.2.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+        <PackageReference Include="NLog" Version="5.4.0" />
+        <PackageReference Include="NLog.Schema" Version="5.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="8.1.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.1" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="launch\Properties\launchSettings.json" />
+        <_ContentIncludedByDefault Remove="launch\Properties\serviceDependencies.json" />
+        <_ContentIncludedByDefault Remove="launch\Properties\serviceDependencies.local.json" />
+    </ItemGroup>
+
+</Project>

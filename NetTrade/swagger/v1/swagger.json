@@ -1,0 +1,208 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Grid Trading Backtest API",
+    "version": "v1",
+    "description": "An API for running grid trading backtests and calculating grid levels."
+  },
+  "paths": {
+    "/api/grid/backtest": {
+      "post": {
+        "tags": [
+          "GridBacktest"
+        ],
+        "summary": "Runs a grid trading backtest",
+        "description": "Submits a configuration to run a historical backtest of a grid trading strategy.",
+        "requestBody": {
+          "description": "The backtest request containing the grid configuration.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GridBacktestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns the results of the backtest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GridBacktestResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An error occurred during the backtest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Internal server error: An unexpected error occurred."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/grid/levels": {
+      "get": {
+        "tags": [
+          "GridBacktest"
+        ],
+        "summary": "Calculates grid levels",
+        "description": "Calculates the price levels for a grid based on the provided parameters.",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "description": "The trading symbol to calculate the grid for.",
+            "schema": {
+              "type": "string",
+              "default": "BTC/USD"
+            }
+          },
+          {
+            "name": "gridLevels",
+            "in": "query",
+            "description": "The number of levels in the grid.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "gridRange",
+            "in": "query",
+            "description": "The total percentage range the grid should cover.",
+            "schema": {
+              "type": "number",
+              "format": "decimal",
+              "default": 5
+            }
+          },
+          {
+            "name": "orderSize",
+            "in": "query",
+            "description": "The size of each order at the grid levels.",
+            "schema": {
+              "type": "number",
+              "format": "decimal",
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Returns the calculated grid levels.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GridLevel"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. An error occurred during calculation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Internal server error: An unexpected error occurred."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GridBacktestRequest": {
+        "type": "object",
+        "properties": {
+          "configuration": {
+            "$ref": "#/components/schemas/GridTradingConfiguration"
+          }
+        }
+      },
+      "GridTradingConfiguration": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "example": "BTC/USD"
+          },
+          "timeframe": {
+            "type": "string",
+            "example": "1h"
+          },
+          "gridLevels": {
+            "type": "integer",
+            "format": "int32",
+            "example": 20
+          },
+          "gridRange": {
+            "type": "number",
+            "format": "decimal",
+            "description": "The total percentage range of the grid.",
+            "example": 10.5
+          },
+          "orderSize": {
+            "type": "number",
+            "format": "decimal",
+            "description": "The size of each order.",
+            "example": 150.0
+          }
+        }
+      },
+      "GridBacktestResult": {
+        "type": "object",
+        "properties": {
+          "totalProfit": {
+            "type": "number",
+            "format": "decimal",
+            "example": 1234.56
+          },
+          "totalTrades": {
+            "type": "integer",
+            "format": "int32",
+            "example": 88
+          }
+        }
+      },
+      "GridLevel": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "description": "The price at which an order is placed.",
+            "example": 50500.75
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of order at this level.",
+            "example": "Buy"
+          },
+          "orderSize": {
+            "type": "number",
+            "format": "decimal",
+            "description": "The size of the order at this level.",
+            "example": 100.0
+          }
+        }
+      }
+    }
+  }
+}

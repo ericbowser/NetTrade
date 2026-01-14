@@ -1,0 +1,104 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+  {
+    "command": "cd www/ && npm run dev",
+    "name": "Run npm start",
+    "request": "launch",
+    "type": "node-terminal"
+  },
+    {
+      "name": ".NET Core Launch (API)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/CoinAPI/bin/Debug/net9.0/ProviderApi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/CoinAPI",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/swagger"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "${auto-detect-url}/swagger",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start ${auto-detect-url}/swagger"
+        }
+      }
+    },
+    {
+      "name": ".NET Core Launch (API - HTTP)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/CoinAPI/bin/Debug/net9.0/ProviderApi.dll",
+      "args": [
+        "--urls",
+        "http://localhost:5229"
+      ],
+      "cwd": "${workspaceFolder}/CoinAPI",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/swagger"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "${auto-detect-url}/swagger",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start ${auto-detect-url}/swagger"
+        }
+      }
+    },
+    {
+      "name": ".NET Core Launch (API - HTTPS)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/CoinAPI/bin/Debug/net9.0/ProviderApi.dll",
+      "args": [
+        "--urls",
+        "https://localhost:7169"
+      ],
+      "cwd": "${workspaceFolder}/CoinAPI",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/swagger"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "${auto-detect-url}/swagger",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start ${auto-detect-url}/swagger"
+        }
+      }
+    }
+  ]
+}
