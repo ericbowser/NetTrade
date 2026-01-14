@@ -81,8 +81,12 @@ namespace NetTrade.Service
         {
             try
             {
+                var safeSymbol = (config.Symbol ?? string.Empty)
+                    .Replace("\r", string.Empty)
+                    .Replace("\n", string.Empty);
+
                 _logger.Info("Fetching historical data for {Symbol} from {StartDate} to {EndDate}",
-                    config.Symbol, config.StartDate, config.EndDate);
+                    safeSymbol, config.StartDate, config.EndDate);
 
                 // Create chunks of date ranges to handle large requests
                 var chunks = Extensions.CreateDateChunks(config.StartDate, config.EndDate, TimeSpan.FromDays(7));

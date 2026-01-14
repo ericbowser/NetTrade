@@ -73,8 +73,12 @@ namespace NetTrade.Controllers
                     config.EndDate = parsedEndDate;
                 }
                 
+                var safeSymbol = (config.Symbol ?? string.Empty)
+                    .Replace("\r", string.Empty)
+                    .Replace("\n", string.Empty);
+
                 _logger.Info("Fetching historical data for {0}, {1}, From: {2}, To: {3}", 
-                    config.Symbol, config.Timeframe, config.StartDate, config.EndDate);
+                    safeSymbol, config.Timeframe, config.StartDate, config.EndDate);
                 
                 var data = await _scalpingStrategyService.GetHistoricalData(config);
                 
