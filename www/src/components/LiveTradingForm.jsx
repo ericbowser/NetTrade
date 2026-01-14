@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Strategy from '../../util/Strategy';
-import { BACKEND_BASE_URL, COINBASE_GRID_LIVE_REL, COINBASE_SCALP_LIVE_REL } from '../../env.json';
+import { BACKEND_BASE_URL, COINBASE_GRID_LIVE_REL, COINBASE_SCALP_LIVE_REL } from '../config/env';
 
 const LiveTradingForm = ({ onSubmit, isLoading, onStop, isRunning, sessionId }) => {
   const [formData, setFormData] = useState({

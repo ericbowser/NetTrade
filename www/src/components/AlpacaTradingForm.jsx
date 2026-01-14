@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  placeCoinbaseBuyOrder,
-  placeCoinbaseSellOrder,
-  placeCoinbaseLimitOrder,
-  getCoinbaseOrders,
-  cancelCoinbaseOrder,
-} from "../../services/api";
 
-const CoinbaseTradingForm = () => {
+const AlpacaTradingForm = () => {
   const [formData, setFormData] = useState({
     productId: "BTC-USD",
     size: 0.001,
@@ -39,14 +32,7 @@ const CoinbaseTradingForm = () => {
       try {
         const result =
           formData.side === "BUY"
-            ? await placeCoinbaseBuyOrder({
-                productId: formData.productId,
-                size: parseFloat(formData.size),
-              })
-            : await placeCoinbaseSellOrder({
-                productId: formData.productId,
-                size: parseFloat(formData.size),
-              });
+          //TODO - Place Alpaca Buy Order
         setSuccess(
           `${formData.side} order placed: ${result.orderId || result}`
         );
@@ -69,13 +55,8 @@ const CoinbaseTradingForm = () => {
       }
 
       try {
-        const result = await placeCoinbaseLimitOrder({
-          productId: formData.productId,
-          side: formData.side || "BUY",
-          size: parseFloat(formData.size),
-          limitPrice: parseFloat(formData.limitPrice),
-        });
-        setSuccess(`Limit order placed: ${result.orderId || result}`);
+        //TODO - Place Alpaca Limit Order
+          setSuccess(`Limit order placed: ${result.orderId || result}`);
         await loadOrders();
       } catch (err) {
         setError(
@@ -91,7 +72,7 @@ const CoinbaseTradingForm = () => {
 
   const loadOrders = async () => {
     try {
-      const result = await getCoinbaseOrders();
+      //TODO - Get Alpaca Orders
       setOrders(Array.isArray(result) ? result : []);
       setError(null); // Clear any previous errors
       setSuccess(null); // Clear success messages
@@ -106,7 +87,7 @@ const CoinbaseTradingForm = () => {
         err.response?.data?.error ||
         err.response?.data?.message ||
         err.message ||
-        "Error loading orders from Coinbase";
+        "Error loading orders from Alpaca";
 
       const errorDetails =
         err.response?.data?.Details || err.response?.data?.details;
@@ -125,7 +106,7 @@ const CoinbaseTradingForm = () => {
     }
 
     try {
-      await cancelCoinbaseOrder(orderId);
+      //TODO - Cancel Alpaca Order
       setSuccess("Order cancelled successfully");
       await loadOrders();
     } catch (err) {
@@ -148,7 +129,7 @@ const CoinbaseTradingForm = () => {
         className="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
       >
         <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">
-          Coinbase Trading
+          Alpaca Trading
         </h2>
 
         {/* Error/Success Messages */}
@@ -401,4 +382,4 @@ const CoinbaseTradingForm = () => {
   );
 };
 
-export default CoinbaseTradingForm;
+export default AlpacaTradingForm;

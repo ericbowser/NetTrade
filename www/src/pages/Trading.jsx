@@ -1,5 +1,5 @@
 import React from 'react';
-import CoinbaseTradingForm from '../components/CoinbaseTradingForm';
+import AlpacaTradingForm from '../components/AlpacaTradingForm';
 
 const Trading = () => {
   return (
@@ -13,7 +13,7 @@ const Trading = () => {
         </p>
       </div>
 
-      <CoinbaseTradingForm />
+      <AlpacaTradingForm />
     </div>
   );
 };

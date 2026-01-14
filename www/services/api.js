@@ -6,11 +6,6 @@ import {
   RSI_STRATEGY_REL,
   BOLLINGER_BANDS_STRATEGY_REL,
   MOVING_AVERAGE_CROSSOVER_STRATEGY_REL,
-  COINBASE_ACCOUNT_REL,
-  COINBASE_BUY_REL,
-  COINBASE_SELL_REL,
-  COINBASE_LIMIT_REL,
-  COINBASE_ORDERS_REL,
   ALPACA_PAPER_ACCOUNT_REL,
   ALPACA_PAPER_POSITIONS_REL,
   ALPACA_PAPER_ORDERS_REL,
@@ -34,97 +29,6 @@ async function getBacktestResults(backtestRequest = {}, strategyUrl = null) {
     return response.data;
   } catch (error) {
     console.error("Error calling backtest API:", error);
-    throw error;
-  }
-}
-
-// Coinbase Trading API functions
-async function getCoinbaseAccount() {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-    const url = `${BACKEND_BASE_URL}${COINBASE_ACCOUNT_REL}`;
-    const response = await axios.get(url, { headers });
-    return response.data;
-  } catch (error) {
-    console.error("Error getting Coinbase account:", error);
-    throw error;
-  }
-}
-
-async function placeCoinbaseBuyOrder(orderRequest) {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-    const url = `${BACKEND_BASE_URL}${COINBASE_BUY_REL}`;
-    const response = await axios.post(url, orderRequest, { headers });
-    return response.data;
-  } catch (error) {
-    console.error("Error placing Coinbase buy order:", error);
-    throw error;
-  }
-}
-
-async function placeCoinbaseSellOrder(orderRequest) {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-    const url = `${BACKEND_BASE_URL}${COINBASE_SELL_REL}`;
-    const response = await axios.post(url, orderRequest, { headers });
-    return response.data;
-  } catch (error) {
-    console.error("Error placing Coinbase sell order:", error);
-    throw error;
-  }
-}
-
-async function placeCoinbaseLimitOrder(orderRequest) {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-    const url = `${BACKEND_BASE_URL}${COINBASE_LIMIT_REL}`;
-    const response = await axios.post(url, orderRequest, { headers });
-    return response.data;
-  } catch (error) {
-    console.error("Error placing Coinbase limit order:", error);
-    throw error;
-  }
-}
-
-// async function getCoinbaseOrders() {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json",
-//       "Access-Control-Allow-Origin": "*",
-//     };
-//     const url = `${BACKEND_BASE_URL}${COINBASE_ORDERS_REL}`;
-//     const response = await axios.get(url, { headers });
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error getting Coinbase orders:", error);
-//     throw error;
-//   }
-// }
-
-async function cancelCoinbaseOrder(orderId) {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-    const url = `${BACKEND_BASE_URL}${COINBASE_ORDERS_REL}/${orderId}`;
-    const response = await axios.delete(url, { headers });
-    return response.data;
-  } catch (error) {
-    console.error("Error cancelling Coinbase order:", error);
     throw error;
   }
 }
@@ -254,12 +158,6 @@ async function cancelAllAlpacaOrders() {
 
 export default getBacktestResults;
 export {
-  getCoinbaseAccount,
-  placeCoinbaseBuyOrder,
-  placeCoinbaseSellOrder,
-  placeCoinbaseLimitOrder,
-  getCoinbaseOrders,
-  cancelCoinbaseOrder,
   getAlpacaAccount,
   getAlpacaPositions,
   getAlpacaOrders,

@@ -181,12 +181,23 @@ namespace CoinApi_Tests
                 Volume = 100m
             });
 
-            // Price moves down 1.5% (hits stop loss at -1%)
-            // Need to drop from 100 to at least 99 (1% drop) to hit stop loss
-            // Add more candles with larger drops to ensure stop loss is hit
-            for (int i = 11; i < 16; i++)
+            // Price moves down to hit stop loss at -1%
+            // Drop from 100 to 98.8 (1.2% drop) in first candle to ensure stop loss is hit immediately
+            // This should trigger stop loss before any reversal signal can occur
+            candles.Add(new CandleData
             {
-                var price = basePrice - (i - 10) * 0.6m; // 99.4, 98.8, 98.2, 97.6, 97.0 (ensures >1% drop)
+                Timestamp = baseTime.AddMinutes(11),
+                Open = 99.5m,
+                High = 99.5m * 1.01m,
+                Low = 98.8m * 0.99m,
+                Close = 98.8m, // 1.2% drop from entry (100) - hits stop loss at 1%
+                Volume = 100m
+            });
+            
+            // Add a few more candles to ensure processing continues
+            for (int i = 12; i < 15; i++)
+            {
+                var price = 98.8m - (i - 12) * 0.1m;
                 candles.Add(new CandleData
                 {
                     Timestamp = baseTime.AddMinutes(i),
@@ -574,7 +585,7 @@ namespace CoinApi_Tests
             {
                 if (candles[i].Macd.HasValue)
                 {
-                    macdValues.Add(candles[i].Macd.Value);
+                    macdValues.Add(candles[i].Macd!.Value);
                 }
             }
 
@@ -618,7 +629,7 @@ namespace CoinApi_Tests
             {
                 if (candles[i].Macd.HasValue && candles[i].MacdSignal.HasValue)
                 {
-                    candles[i].MacdHistogram = candles[i].Macd.Value - candles[i].MacdSignal.Value;
+                    candles[i].MacdHistogram = candles[i].Macd!.Value - candles[i].MacdSignal!.Value;
                 }
             }
         }

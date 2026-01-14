@@ -1,9 +1,13 @@
 ﻿import React from "react";
 import { createRoot } from "react-dom/client";
+import dotenv from "dotenv";
 import App from "./App";
 import "./assets/styles/output.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
+
+// Load environment variables
+dotenv.config();
 import Dashboard from "./pages/Dashboard";
 import Strategies from "./pages/Strategies";
 import StrategyDetail from "./pages/StrategyDetail";
