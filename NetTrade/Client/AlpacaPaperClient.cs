@@ -16,7 +16,6 @@ namespace NetTrade.Client
         private readonly IAlpacaTradingClient _alpacaTradingClient;
         private readonly IAlpacaCryptoDataClient _alpacaCryptoDataClient;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private bool _disposedValue;
 
         public AlpacaPaperClient(IConfiguration config)
         {

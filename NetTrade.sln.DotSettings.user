@@ -51,9 +51,40 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ASwaggerMiddleware_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fericbo_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E2_003Fresharper_002Dhost_003FSourcesCache_003Fc57594c2e038edb950947e79ec5242b7efc376c7445ead9fe3daaf98d3d51_003FSwaggerMiddleware_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ASwaggerUIMiddleware_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fericbo_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E2_003Fresharper_002Dhost_003FSourcesCache_003Fc4a0c9b6e253864e5b72ac90dbe65f2d6a5380d47d7c99a79d718ebc31bd0b5_003FSwaggerUIMiddleware_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATestInvoker_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fericr_003FAppData_003FLocal_003FJetBrains_003FShared_003FvAny_003FSourcesCache_003F5e14a4e27990972fa4ae94975603bd298aaf328ee083c03b10569ee4724d57_003FTestInvoker_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e6bd0d55_002Deb06_002D4480_002Da3d2_002D91f9b8bbf1ba/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetAccountAsync_ShouldReturnAccount_WhenApiCallSucceeds" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::49DEC98C-B603-C05E-770B-CFD6A88D50DC::net9.0::CoinApi_Tests.AlpacaCryptoDataServiceTests.GetAccountAsync_ShouldReturnAccount_WhenApiCallSucceeds&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=61b48ccf_002Dad5b_002D429f_002D8743_002D87dd26495e34/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;Or&gt;&#xD;
+      &lt;TestAncestor&gt;&#xD;
+        &lt;TestId&gt;xUnit::49DEC98C-B603-C05E-770B-CFD6A88D50DC::net9.0::CoinApi_Tests.AlpacaCryptoDataServiceTests.GetAccountAsync_ShouldReturnAccount_WhenApiCallSucceeds&lt;/TestId&gt;&#xD;
+      &lt;/TestAncestor&gt;&#xD;
+      &lt;ProjectFile&gt;49DEC98C-B603-C05E-770B-CFD6A88D50DC/f:GridStrategyBacktestTests.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;/Or&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;xUnit::49DEC98C-B603-C05E-770B-CFD6A88D50DC::net9.0::CoinApi_Tests.GridStrategyBacktestTests.GridBacktest_EquityCalculation_IncludesUnrealizedGains&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/And&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9a0ccd8c_002D3d98_002D4c34_002D9fa1_002D2db951d77e1e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;Or&gt;&#xD;
+      &lt;TestAncestor&gt;&#xD;
+        &lt;TestId&gt;xUnit::49DEC98C-B603-C05E-770B-CFD6A88D50DC::net9.0::CoinApi_Tests.AlpacaCryptoDataServiceTests.GetAccountAsync_ShouldReturnAccount_WhenApiCallSucceeds&lt;/TestId&gt;&#xD;
+      &lt;/TestAncestor&gt;&#xD;
+      &lt;ProjectFile&gt;49DEC98C-B603-C05E-770B-CFD6A88D50DC/f:GridStrategyBacktestTests.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;/Or&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;xUnit::49DEC98C-B603-C05E-770B-CFD6A88D50DC::net9.0::CoinApi_Tests.GridStrategyBacktestTests.GridBacktest_EquityCalculation_IncludesUnrealizedGains&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/And&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e6bd0d55_002Deb06_002D4480_002Da3d2_002D91f9b8bbf1ba/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetAccountAsync_ShouldReturnAccount_WhenApiCallSucceeds" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;xUnit::49DEC98C-B603-C05E-770B-CFD6A88D50DC::net9.0::CoinApi_Tests.AlpacaCryptoDataServiceTests.GetAccountAsync_ShouldReturnAccount_WhenApiCallSucceeds&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;ProjectFile&gt;49DEC98C-B603-C05E-770B-CFD6A88D50DC/f:GridStrategyBacktestTests.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

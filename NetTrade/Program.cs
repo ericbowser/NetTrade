@@ -11,7 +11,7 @@ using Microsoft.OpenApi.Models;
 
 namespace NetTrade
 {
-    public abstract class Program
+    public sealed class Program
     {
         public static async Task Main(string[] args)
         {
@@ -64,8 +64,8 @@ namespace NetTrade
                 
                 // Include XML comments if available
                 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
-                if (System.IO.File.Exists(xmlPath))
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                if (File.Exists(xmlPath))
                 {
                     c.IncludeXmlComments(xmlPath);
                 }

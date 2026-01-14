@@ -3,7 +3,8 @@
 .idea/
 .vscode/
 
-
+*.user
+*.suo
 
 appsettings.json
 bin

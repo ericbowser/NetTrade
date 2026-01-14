@@ -361,10 +361,12 @@ namespace CoinApi_Tests
 
                 // Simple MACD calculation for testing
                 // MACD = EMA(fast) - EMA(slow), simplified as price - SMA
-                if (candles[i].Sma200 != null)
+                var smaValue = candles[i].Sma200;
+                if (smaValue.HasValue)
                 {
-                    candles[i].Trend = candles[i].Close > candles[i].Sma200 ? 1 : -1;
-                    candles[i].Macd = candles[i].Close - candles[i].Sma200.Value;
+                    var sma = smaValue.Value;
+                    candles[i].Trend = candles[i].Close > sma ? 1 : -1;
+                    candles[i].Macd = candles[i].Close - sma;
                     candles[i].MacdSignal = 0; // Simplified for testing
                     candles[i].MacdHistogram = candles[i].Macd - candles[i].MacdSignal;
                 }
