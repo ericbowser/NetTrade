@@ -71,28 +71,49 @@ namespace CoinApi_Tests
             config.TakeProfitPips = 2m; // 2% take profit
 
             var candles = new List<CandleData>();
-            var baseTime = DateTime.UtcNow.AddMinutes(-10);
+            var baseTime = DateTime.UtcNow.AddMinutes(-20);
+            var basePrice = 100m;
             
             // Setup period - build indicators with negative histogram (no signal)
-            for (int i = 0; i < 5; i++)
+            // Start with prices below SMA to create negative histogram
+            for (int i = 0; i < 10; i++)
             {
-                var candle = CreateCandleWithIndicators(baseTime.AddMinutes(i), 100m, buySignal: false);
-                candle.MacdHistogram = -0.1m; // Negative to allow crossover
-                candles.Add(candle);
+                var price = basePrice - 1m; // Price below base
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
             }
 
-            // Buy signal at 100 - histogram crosses from negative to positive
-            var buyCandle = CreateCandleWithIndicators(baseTime.AddMinutes(5), 100m, buySignal: true);
-            buyCandle.MacdHistogram = 0.1m; // Positive histogram
-            candles.Add(buyCandle);
+            // Buy signal at 100 - price rises above SMA, histogram crosses from negative to positive
+            candles.Add(new CandleData
+            {
+                Timestamp = baseTime.AddMinutes(10),
+                Open = basePrice,
+                High = basePrice * 1.01m,
+                Low = basePrice * 0.99m,
+                Close = basePrice,
+                Volume = 100m
+            });
 
             // Price moves up 2.5% (hits take profit at 2%)
-            for (int i = 6; i < 9; i++)
+            for (int i = 11; i < 15; i++)
             {
-                var price = 100m + (i - 5) * 1m; // 101, 102, 102.5
-                var candle = CreateCandleWithIndicators(baseTime.AddMinutes(i), price, buySignal: false);
-                candle.MacdHistogram = 0.1m; // Keep positive (no exit signal)
-                candles.Add(candle);
+                var price = basePrice + (i - 10) * 0.5m; // 100.5, 101, 101.5, 102, 102.5
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
             }
 
             // Calculate indicators properly
@@ -115,7 +136,7 @@ namespace CoinApi_Tests
                 var trade = result.Trades.First();
                 Assert.Equal("LONG", trade.Direction);
                 Assert.True(trade.PnL > 0, "Trade should be profitable");
-                Assert.True(trade.PnLPct >= config.TakeProfitPips, "PnL% should meet take profit target");
+                Assert.True(trade.PnLPct >= config.TakeProfitPips, $"PnL% should meet take profit target. Expected: >= {config.TakeProfitPips}%, Actual: {trade.PnLPct}%");
                 Assert.Equal("WIN", trade.Result);
             }
 
@@ -130,29 +151,52 @@ namespace CoinApi_Tests
             config.StopLossPips = 1m; // 1% stop loss
 
             var candles = new List<CandleData>();
-            var baseTime = DateTime.UtcNow.AddMinutes(-10);
+            var baseTime = DateTime.UtcNow.AddMinutes(-20);
+            var basePrice = 100m;
             
             // Setup period - build indicators with negative histogram (no signal)
-            for (int i = 0; i < 5; i++)
+            // Start with prices below SMA to create negative histogram
+            for (int i = 0; i < 10; i++)
             {
-                var candle = CreateCandleWithIndicators(baseTime.AddMinutes(i), 100m, buySignal: false);
-                candle.MacdHistogram = -0.1m; // Negative to allow crossover
-                candles.Add(candle);
+                var price = basePrice - 1m; // Price below base
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
             }
 
-            // Buy signal at 100 - histogram crosses from negative to positive
-            var buyCandle = CreateCandleWithIndicators(baseTime.AddMinutes(5), 100m, buySignal: true);
-            buyCandle.MacdHistogram = 0.1m; // Positive histogram
-            candles.Add(buyCandle);
+            // Buy signal at 100 - price rises above SMA, histogram crosses from negative to positive
+            candles.Add(new CandleData
+            {
+                Timestamp = baseTime.AddMinutes(10),
+                Open = basePrice,
+                High = basePrice * 1.01m,
+                Low = basePrice * 0.99m,
+                Close = basePrice,
+                Volume = 100m
+            });
 
             // Price moves down 1.5% (hits stop loss at -1%)
-            var candle1 = CreateCandleWithIndicators(baseTime.AddMinutes(6), 99m, buySignal: false);
-            candle1.MacdHistogram = 0.1m; // Keep positive (no exit signal yet)
-            candles.Add(candle1);
-            
-            var candle2 = CreateCandleWithIndicators(baseTime.AddMinutes(7), 98.5m, buySignal: false);
-            candle2.MacdHistogram = 0.1m; // Keep positive (no exit signal yet)
-            candles.Add(candle2);
+            // Need to drop from 100 to at least 99 (1% drop) to hit stop loss
+            // Add more candles with larger drops to ensure stop loss is hit
+            for (int i = 11; i < 16; i++)
+            {
+                var price = basePrice - (i - 10) * 0.6m; // 99.4, 98.8, 98.2, 97.6, 97.0 (ensures >1% drop)
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
 
             // Calculate indicators properly
             CalculateSimpleIndicators(candles);
@@ -167,12 +211,14 @@ namespace CoinApi_Tests
             var result = service.BacktestStrategy(candles, initialCapital, config);
 
             // Assert
+            Assert.True(result.TotalTrades >= 1, "Should have at least 1 trade");
+
             if (result.Trades.Any())
             {
                 var trade = result.Trades.First();
                 Assert.Equal("LONG", trade.Direction);
                 Assert.True(trade.PnL < 0, "Trade should be a loss");
-                Assert.True(trade.PnLPct <= -config.StopLossPips, "PnL% should hit stop loss");
+                Assert.True(trade.PnLPct <= -config.StopLossPips, $"PnL% should hit stop loss. Expected: <= {-config.StopLossPips}%, Actual: {trade.PnLPct}%");
                 Assert.Equal("LOSS", trade.Result);
             }
 
@@ -189,6 +235,9 @@ namespace CoinApi_Tests
             var candles = CreateCandlesForWinRateTest(config);
             decimal initialCapital = 1000m;
 
+            // Calculate indicators first
+            CalculateSimpleIndicators(candles);
+            
             // Generate signals based on indicators
             GenerateSignals(candles);
 
@@ -275,34 +324,37 @@ namespace CoinApi_Tests
         {
             var candles = new List<CandleData>();
             var basePrice = 100m;
-            var baseTime = DateTime.UtcNow.AddMinutes(-20);
+            var baseTime = DateTime.UtcNow.AddMinutes(-30);
 
-            // Create enough candles for indicators to be calculated
-            // Start with negative histogram to allow crossover
+            // Create enough candles for indicators (need at least 5 for SMA, more for MACD)
+            // Start with prices below SMA to create negative histogram
             for (int i = 0; i < 10; i++)
             {
+                var price = basePrice - 1m; // Price below base to ensure negative histogram initially
                 var candle = new CandleData
                 {
                     Timestamp = baseTime.AddMinutes(i),
-                    Open = basePrice,
-                    High = basePrice * 1.01m,
-                    Low = basePrice * 0.99m,
-                    Close = basePrice,
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
                     Volume = 100m
                 };
                 candles.Add(candle);
             }
 
-            // Create a candle that will generate a buy signal (histogram crossover)
+            // Create rising prices to trigger buy signal (price crosses above SMA, histogram turns positive)
             for (int i = 10; i < 20; i++)
             {
+                // Gradually increase price to create uptrend
+                var price = basePrice - 1m + (i - 10) * 0.2m; // Rising prices
                 var candle = new CandleData
                 {
                     Timestamp = baseTime.AddMinutes(i),
-                    Open = basePrice,
-                    High = basePrice * 1.01m,
-                    Low = basePrice * 0.99m,
-                    Close = basePrice,
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
                     Volume = 100m
                 };
                 candles.Add(candle);
@@ -334,41 +386,239 @@ namespace CoinApi_Tests
 
         private List<CandleData> CreateCandlesForWinRateTest(ScalpingStrategyConfiguration config)
         {
-            // Create a series of candles that will result in specific win/loss outcomes
+            // Create a series of candles that will result in multiple trades
+            // Strategy: Create clear price movements that cross SMA and create histogram crossovers
             var candles = new List<CandleData>();
+            var basePrice = 100m;
+            var baseTime = DateTime.UtcNow.AddMinutes(-60);
 
-            // TODO: Implement specific candle patterns for predictable win/loss ratio
-            // This would require detailed knowledge of the signal generation logic
+            // Setup period - enough candles for indicators (start low to create negative histogram)
+            for (int i = 0; i < 10; i++)
+            {
+                var price = basePrice - 2m; // Start well below base
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
 
-            return CreateCandlesWithSimpleSignal();
+            // First trade setup: Price rises to cross SMA and create buy signal
+            // Then continue rising to hit take profit
+            for (int i = 10; i < 18; i++)
+            {
+                var price = basePrice - 2m + (i - 10) * 0.4m; // Rising from 98 to 101.2
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
+
+            // Price drops to create sell signal (cross below SMA, histogram negative)
+            for (int i = 18; i < 25; i++)
+            {
+                var price = basePrice + 1m - (i - 18) * 0.4m; // Falling from 101.2 to 98.4
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
+
+            // Second trade: Sell signal, then price continues down (win via take profit or reversal)
+            for (int i = 25; i < 32; i++)
+            {
+                var price = basePrice - 1m - (i - 25) * 0.3m; // Continue falling from 98.4 to 96.5
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
+
+            // Price rises to create buy signal again
+            for (int i = 32; i < 40; i++)
+            {
+                var price = basePrice - 2.5m + (i - 32) * 0.35m; // Rising from 96.5 to 99.3
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
+
+            // Third trade: Buy signal, but price drops (loss via stop loss)
+            for (int i = 40; i < 48; i++)
+            {
+                var price = basePrice - 0.5m - (i - 40) * 0.35m; // Falling from 99.3 to 96.7
+                candles.Add(new CandleData
+                {
+                    Timestamp = baseTime.AddMinutes(i),
+                    Open = price,
+                    High = price * 1.01m,
+                    Low = price * 0.99m,
+                    Close = price,
+                    Volume = 100m
+                });
+            }
+
+            return candles;
         }
 
         private void CalculateSimpleIndicators(List<CandleData> candles)
         {
-            // Simple SMA calculation for testing
-            int period = 5;
+            // Calculate SMA using the same logic as the service
+            int smaPeriod = 5;
             for (int i = 0; i < candles.Count; i++)
             {
-                if (i >= period - 1)
+                if (i >= smaPeriod - 1)
                 {
                     decimal sum = 0;
-                    for (int j = i - (period - 1); j <= i; j++)
+                    for (int j = i - (smaPeriod - 1); j <= i; j++)
                     {
                         sum += candles[j].Close;
                     }
-                    candles[i].Sma200 = sum / period;
+                    candles[i].Sma200 = sum / smaPeriod;
                 }
+            }
 
-                // Simple MACD calculation for testing
-                // MACD = EMA(fast) - EMA(slow), simplified as price - SMA
-                var smaValue = candles[i].Sma200;
-                if (smaValue.HasValue)
+            // Calculate MACD using EMA (simplified but functional)
+            int fastPeriod = 3;
+            int slowPeriod = 5;
+            int signalPeriod = 3;
+
+            // Calculate Fast EMA
+            var fastEma = new List<decimal>();
+            for (int i = 0; i < candles.Count; i++)
+            {
+                if (i < fastPeriod - 1)
                 {
-                    var sma = smaValue.Value;
-                    candles[i].Trend = candles[i].Close > sma ? 1 : -1;
-                    candles[i].Macd = candles[i].Close - sma;
-                    candles[i].MacdSignal = 0; // Simplified for testing
-                    candles[i].MacdHistogram = candles[i].Macd - candles[i].MacdSignal;
+                    fastEma.Add(0);
+                    continue;
+                }
+                if (i == fastPeriod - 1)
+                {
+                    decimal sum = 0;
+                    for (int j = 0; j <= i; j++)
+                    {
+                        sum += candles[j].Close;
+                    }
+                    fastEma.Add(sum / fastPeriod);
+                }
+                else
+                {
+                    decimal multiplier = 2m / (fastPeriod + 1);
+                    fastEma.Add((candles[i].Close - fastEma[i - 1]) * multiplier + fastEma[i - 1]);
+                }
+            }
+
+            // Calculate Slow EMA
+            var slowEma = new List<decimal>();
+            for (int i = 0; i < candles.Count; i++)
+            {
+                if (i < slowPeriod - 1)
+                {
+                    slowEma.Add(0);
+                    continue;
+                }
+                if (i == slowPeriod - 1)
+                {
+                    decimal sum = 0;
+                    for (int j = 0; j <= i; j++)
+                    {
+                        sum += candles[j].Close;
+                    }
+                    slowEma.Add(sum / slowPeriod);
+                }
+                else
+                {
+                    decimal multiplier = 2m / (slowPeriod + 1);
+                    slowEma.Add((candles[i].Close - slowEma[i - 1]) * multiplier + slowEma[i - 1]);
+                }
+            }
+
+            // Calculate MACD Line (Fast EMA - Slow EMA)
+            int macdStartIndex = Math.Max(fastPeriod, slowPeriod) - 1;
+            for (int i = macdStartIndex; i < candles.Count; i++)
+            {
+                if (fastEma[i] != 0 && slowEma[i] != 0)
+                {
+                    candles[i].Macd = fastEma[i] - slowEma[i];
+                }
+            }
+
+            // Calculate Signal Line (EMA of MACD Line)
+            var macdValues = new List<decimal>();
+            for (int i = macdStartIndex; i < candles.Count; i++)
+            {
+                if (candles[i].Macd.HasValue)
+                {
+                    macdValues.Add(candles[i].Macd.Value);
+                }
+            }
+
+            var signalLine = new List<decimal>();
+            int signalStartIndex = macdStartIndex + signalPeriod - 1;
+            for (int i = 0; i < macdValues.Count; i++)
+            {
+                if (i < signalPeriod - 1)
+                {
+                    signalLine.Add(0);
+                    continue;
+                }
+                if (i == signalPeriod - 1)
+                {
+                    decimal sum = 0;
+                    for (int j = 0; j <= i; j++)
+                    {
+                        sum += macdValues[j];
+                    }
+                    signalLine.Add(sum / signalPeriod);
+                }
+                else
+                {
+                    decimal multiplier = 2m / (signalPeriod + 1);
+                    signalLine.Add((macdValues[i] - signalLine[i - 1]) * multiplier + signalLine[i - 1]);
+                }
+            }
+
+            // Set signal line values back to candles
+            for (int i = 0; i < signalLine.Count; i++)
+            {
+                int candleIndex = signalStartIndex + i;
+                if (candleIndex < candles.Count)
+                {
+                    candles[candleIndex].MacdSignal = signalLine[i];
+                }
+            }
+
+            // Calculate Histogram (MACD Line - Signal Line)
+            for (int i = signalStartIndex; i < candles.Count; i++)
+            {
+                if (candles[i].Macd.HasValue && candles[i].MacdSignal.HasValue)
+                {
+                    candles[i].MacdHistogram = candles[i].Macd.Value - candles[i].MacdSignal.Value;
                 }
             }
         }
